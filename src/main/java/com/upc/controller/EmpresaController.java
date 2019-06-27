@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.upc.exception.ModeloNotFoundException;
 import com.upc.model.entity.Empresa;
-import com.upc.model.entity.Recomendacion;
 import com.upc.service.EmpresaService;
 
 import io.swagger.annotations.Api;
@@ -58,24 +56,14 @@ public class EmpresaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Empresa> registrar(@Valid @RequestBody Empresa empresa){
+	public ResponseEntity<Boolean> registrar(@Valid @RequestBody Empresa empresa){
 		Optional<Empresa> empresaOptional = Optional.ofNullable(empresaService.registrar(empresa));
 		if(empresaOptional.isPresent()) {
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(empresaOptional.get().getId()).toUri();
 			return ResponseEntity.created(location).build();
 		}
 		else {
-			return new ResponseEntity<Empresa>(HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	@PostMapping(value= "/recomendar")
-	public ResponseEntity<Recomendacion> recomendar(@Valid @RequestBody Recomendacion recomendacion){
-		Optional<Recomendacion> recomendacionOptional = Optional.ofNullable(empresaService.recomendar(recomendacion));
-		if(recomendacionOptional.isPresent()) {
-			return new ResponseEntity<Recomendacion>(recomendacion,HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<Recomendacion>(HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 		}
 	}
 	

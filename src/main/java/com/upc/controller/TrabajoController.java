@@ -46,6 +46,13 @@ public class TrabajoController {
 		return new ResponseEntity<List<Trabajo>>(trabajos, HttpStatus.OK);
 	}
 	
+	@ApiOperation("Rertorna una lista de trabajos disponibles")
+	@GetMapping(value = "/disponibles",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Trabajo>> listarDisponibles(){
+		List<Trabajo> trabajos = new ArrayList<>();
+		trabajos = trabajoService.listarDisponibles();
+		return new ResponseEntity<List<Trabajo>>(trabajos, HttpStatus.OK);
+	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Trabajo> listarId(@PathVariable("id") Integer id) {
@@ -58,19 +65,27 @@ public class TrabajoController {
 	}
 	
 	@ApiOperation("Rertorna una lista de trabajos por Empresa")
-	@GetMapping(value= "/trabajos/empresa", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value= "/empresa/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Trabajo>> listarPorEmpresa(@PathVariable("id") Integer id){
 		List<Trabajo> trabajos = new ArrayList<>();
 		trabajos = trabajoService.listarPorEmpresa(id);
 		return new ResponseEntity<List<Trabajo>>(trabajos, HttpStatus.OK);
 	}
 	
-	@ApiOperation("Rertorna una lista de postulaciones por Trabajo")
-	@GetMapping(value= "/trabajos/postulaciones", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Postulacion>> listarPostulaciones(@PathVariable("id") Integer id){
-		List<Postulacion> postulaciones = new ArrayList<>();
-		postulaciones = trabajoService.listarPostulaciones(id);
-		return new ResponseEntity<List<Postulacion>>(postulaciones, HttpStatus.OK);
+	@ApiOperation("Rertorna una lista de trabajos por Trabajador")
+	@GetMapping(value= "/trabajador/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Trabajo>> listarPorTrabajador(@PathVariable("id") Integer id){
+		List<Trabajo> trabajos = new ArrayList<>();
+		trabajos = trabajoService.listarPorTrabajador(id);
+		return new ResponseEntity<List<Trabajo>>(trabajos, HttpStatus.OK);
+	}
+	
+	@ApiOperation("Rertorna una lista de trabajos por Area")
+	@GetMapping(value= "/area/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Trabajo>> listarPorArea(@PathVariable("id") Integer id){
+		List<Trabajo> trabajos = new ArrayList<>();
+		trabajos = trabajoService.listarPorArea(id);
+		return new ResponseEntity<List<Trabajo>>(trabajos, HttpStatus.OK);
 	}
 	
 	@PostMapping

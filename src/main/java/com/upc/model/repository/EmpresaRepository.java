@@ -11,6 +11,6 @@ import com.upc.model.entity.Empresa;
 public interface EmpresaRepository 
 	extends JpaRepository<Empresa, Integer>{
 
-	@Query(value="SELECT e FROM empresas e WHERE e.nombre = :nombre", nativeQuery = true)
+	@Query("FROM Empresa e WHERE e.nombre = :nombre")
 	Empresa getMismaEmpresa(@Param("nombre") String nombre);
 }

@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.upc.model.entity.Empresa;
-import com.upc.model.entity.Recomendacion;
 import com.upc.model.repository.EmpresaRepository;
-import com.upc.model.repository.RecomendacionRepository;
 import com.upc.service.EmpresaService;
 
 @Service
@@ -17,8 +15,6 @@ public class EmpresaServiceImpl implements EmpresaService{
 	
 	@Autowired
 	private EmpresaRepository empresaRepository;
-	@Autowired
-	private RecomendacionRepository recomendacionRepository;
 	
 	@Override
 	public Empresa registrar(Empresa t) {		
@@ -45,14 +41,5 @@ public class EmpresaServiceImpl implements EmpresaService{
 	@Override
 	public List<Empresa> listar() {
 		return empresaRepository.findAll();
-	}
-	@Override
-	public List<Recomendacion> listarRecomendaciones(int id){
-		return recomendacionRepository.getRecomendacionesPorEmpresa(id);
-	}
-	@Override
-	public Recomendacion recomendar(Recomendacion recomendacion) {
-		return recomendacionRepository.save(recomendacion);
-
 	}
 }

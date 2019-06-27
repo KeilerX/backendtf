@@ -12,4 +12,7 @@ public interface TrabajoService
 	Trabajo registrar(TrabajoListaAreaDTO trabajoDTO);
 	List<Trabajo> listarPorEmpresa(int id);
 	List<Postulacion> listarPostulaciones(int id);
+	List<Trabajo> listarPorArea(int id);
+	List<Trabajo> listarPorTrabajador(int id);
+	List<Trabajo> listarDisponibles();
 }

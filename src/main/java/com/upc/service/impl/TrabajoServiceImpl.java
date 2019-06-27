@@ -1,5 +1,6 @@
 package com.upc.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,10 +61,38 @@ public class TrabajoServiceImpl implements TrabajoService {
 		return postulacionRepository.getPostulacionesPorTrabajo(id);
 	}
 	
+	@Override
+	public List<Trabajo> listarPorArea(int id){
+		List<Trabajo> trabajos = new ArrayList<>();
+		areaTrabajoRepository.getTrabajosPorArea(id)
+			.forEach(areaTrabajo->
+				trabajos.add(areaTrabajo.getTrabajo())
+			);
+		return trabajos;
+	}
+	
+	@Override
+	public List<Trabajo> listarPorTrabajador(int id){
+		List<Trabajo> trabajos = new ArrayList<>();
+		postulacionRepository.getPostulacionesPorTrabajador(id)
+			.forEach(postulacion->
+				trabajos.add(postulacion.getTrabajo())
+			);
+		return trabajos;
+	}
+	@Override
+	public List<Trabajo> listarDisponibles(){
+		List<Trabajo> trabajos = trabajoRepository.findAll();
+		trabajos.removeIf(t -> t.getEstado() != false);
+		return trabajos;
+	}
+	
+	
+	
 	@Transactional
 	@Override
 	public Trabajo registrar(TrabajoListaAreaDTO trabajoDTO) {
-		
+		trabajoDTO.getTrabajo().setEstado(false);
 		Optional<Trabajo> trabajoOptional = Optional.ofNullable(trabajoRepository.save(trabajoDTO.getTrabajo()));
 		trabajoDTO.getLstArea()
 					.forEach(area->

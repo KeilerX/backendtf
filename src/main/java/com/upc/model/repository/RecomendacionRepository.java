@@ -13,9 +13,9 @@ import com.upc.model.entity.Recomendacion;
 public interface RecomendacionRepository 
 	extends JpaRepository<Recomendacion, Integer>{
 
-	@Query(value="SELECT p FROM Recomendacion p WHERE p.trabajador_id=:id", nativeQuery = true)
+	@Query("FROM Recomendacion p WHERE p.trabajador.id=:id")
 	List<Recomendacion> getRecomendacionesPorTrabajador(@Param("id") int id);
 	
-	@Query(value="SELECT p FROM Recomendacion p WHERE p.empresa_id=:id", nativeQuery = true)
+	@Query("FROM Recomendacion p WHERE p.empresa.id=:id")
 	List<Recomendacion> getRecomendacionesPorEmpresa(@Param("id") int id);
 }

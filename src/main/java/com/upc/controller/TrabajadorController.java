@@ -18,13 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.upc.exception.ModeloNotFoundException;
-import com.upc.model.entity.Postulacion;
-import com.upc.model.entity.Recomendacion;
 import com.upc.model.entity.Trabajador;
 import com.upc.service.TrabajadorService;
 
@@ -47,6 +44,13 @@ public class TrabajadorController {
 		return new ResponseEntity<List<Trabajador>>(trabajadores, HttpStatus.OK);
 	}
 	
+	@ApiOperation("Rertorna una lista de trabajadores por trabajo")
+	@GetMapping(value="/trabajo/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Trabajador>> listarPorTrabajo(@PathVariable("id") Integer id){
+		List<Trabajador> trabajadores = new ArrayList<>();
+		trabajadores = trabajadorService.listarPorTrabajo(id);
+		return new ResponseEntity<List<Trabajador>>(trabajadores, HttpStatus.OK);
+	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Trabajador> listarId(@PathVariable("id") Integer id) {
@@ -57,41 +61,17 @@ public class TrabajadorController {
 		
 		return new ResponseEntity<Trabajador>(trabajador.get(), HttpStatus.OK);
 	}
-	
-	@GetMapping(value="/postulaciones",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Postulacion>> listarPostulaciones(@PathVariable("id") Integer id){
-		List<Postulacion> postulaciones = new ArrayList<>();
-		postulaciones = trabajadorService.listarPostulaciones(id);
-		return new ResponseEntity<List<Postulacion>>(postulaciones, HttpStatus.OK);
-	}
-	
-	@GetMapping(value= "/recomendaciones", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Recomendacion>> listarRecomendaciones(@PathVariable("id") Integer id){
-		List<Recomendacion> recomendaciones = new ArrayList<>();
-		recomendaciones = trabajadorService.listarRecomendaciones(id);
-		return new ResponseEntity<List<Recomendacion>>(recomendaciones, HttpStatus.OK);
-	}
+
 	
 	@PostMapping
-	public ResponseEntity<Trabajador> registrar(@Valid @RequestBody Trabajador trabajador){
+	public ResponseEntity<Boolean> registrar(@Valid @RequestBody Trabajador trabajador){
 		Optional<Trabajador> trabajadorOptional = Optional.ofNullable(trabajadorService.registrar(trabajador));
 		if(trabajadorOptional.isPresent()) {
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(trabajadorOptional.get().getId()).toUri();
 			return ResponseEntity.created(location).build();
 		}
 		else {
-			return new ResponseEntity<Trabajador>(HttpStatus.NOT_ACCEPTABLE);
-		}
-	}
-	
-	@PostMapping(value= "/postular")
-	public ResponseEntity<Postulacion> postular(@Valid @RequestBody Postulacion postulacion){
-		Optional<Postulacion> postulacionOptional = Optional.ofNullable(trabajadorService.postular(postulacion));
-		if(postulacionOptional.isPresent()) {
-			return new ResponseEntity<Postulacion>(postulacion,HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<Postulacion>(HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 		}
 	}
 	

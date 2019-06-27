@@ -11,6 +11,6 @@ import com.upc.model.entity.Trabajador;
 public interface TrabajadorRepository 
 	extends JpaRepository<Trabajador, Integer>{
 
-	@Query(value="SELECT t FROM trabajadores t WHERE t.nombres=:nombres AND t.apellidos=:apellidos", nativeQuery=true)
+	@Query("FROM Trabajador t WHERE t.nombres=:nombres AND t.apellidos=:apellidos")
 	Trabajador getMismoTrabajador(@Param("nombres")String nombres,@Param("apellidos") String apellidos);
 }

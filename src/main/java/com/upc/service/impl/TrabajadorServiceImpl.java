@@ -1,16 +1,14 @@
 package com.upc.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.upc.model.entity.Postulacion;
-import com.upc.model.entity.Recomendacion;
 import com.upc.model.entity.Trabajador;
 import com.upc.model.repository.PostulacionRepository;
-import com.upc.model.repository.RecomendacionRepository;
 import com.upc.model.repository.TrabajadorRepository;
 import com.upc.service.TrabajadorService;
 
@@ -20,8 +18,6 @@ public class TrabajadorServiceImpl implements TrabajadorService{
 	private TrabajadorRepository trabajadorRepository;
 	@Autowired
 	private PostulacionRepository postulacionRepository;
-	@Autowired
-	private RecomendacionRepository recomendacionRepository;
 	
 	@Override
 	public Trabajador registrar(Trabajador t) {	
@@ -49,17 +45,14 @@ public class TrabajadorServiceImpl implements TrabajadorService{
 	public List<Trabajador> listar() {
 		return trabajadorRepository.findAll();
 	}
+	
 	@Override
-	public List<Postulacion> listarPostulaciones(int id){
-		return postulacionRepository.getPostulacionesPorTrabajador(id);
-	}
-	@Override
-	public List<Recomendacion> listarRecomendaciones(int id){
-		return recomendacionRepository.getRecomendacionesPorTrabajador(id);
-	}
-	@Override
-	public Postulacion postular(Postulacion postulacion) {
-		postulacion.setEstado(1);
-		return postulacionRepository.save(postulacion);
+	public List<Trabajador> listarPorTrabajo(int id){
+		List<Trabajador> trabajadores = new ArrayList<>();
+		postulacionRepository.getPostulacionesPorTrabajo(id)
+			.forEach(postulacion->
+			trabajadores.add(postulacion.getTrabajador())
+			);
+		return trabajadores;
 	}
 }

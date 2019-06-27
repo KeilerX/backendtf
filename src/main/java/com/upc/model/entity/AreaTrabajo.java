@@ -7,9 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="area_trabajos")
+@Table(name="area_trabajos",uniqueConstraints={@UniqueConstraint(columnNames={"area_id","trabajo_id"})})
 public class AreaTrabajo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

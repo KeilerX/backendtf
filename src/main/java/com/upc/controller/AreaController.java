@@ -43,6 +43,14 @@ public class AreaController {
 		return new ResponseEntity<List<Area>>(areas, HttpStatus.OK);
 	}
 	
+	@ApiOperation("Retorna una lista de areas por trabajo")
+	@GetMapping(value="/trabajo/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Area>> listarPorTrabajo(@PathVariable("id") Integer id){
+		List<Area> areas = new ArrayList<>();
+		areas = areaService.listarPorTrabajo(id);
+		return new ResponseEntity<List<Area>>(areas, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Area> listarId(@PathVariable("id") Integer id) {
 		Optional<Area> area = areaService.listId(id);
